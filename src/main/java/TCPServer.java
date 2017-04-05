@@ -18,6 +18,8 @@ public class TCPServer extends Thread{
     @Override
     public void run() {
         try {
+            this.sleep(1000);
+
             InputStream inputStream = socket.getInputStream();
 
             OutputStream outputStream = socket.getOutputStream();
@@ -34,6 +36,8 @@ public class TCPServer extends Thread{
 
             socket.close();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

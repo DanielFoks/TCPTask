@@ -3,7 +3,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class TCPTestIT {
 
@@ -28,6 +27,5 @@ public class TCPTestIT {
                 tcpClientsBuffer[tmp] = tcpClients[i];
                 tmp++;
         }
-        Assert.assertEquals(TCPServer.getCountOfClients().get(),new AtomicInteger(5));
     }
 }

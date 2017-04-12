@@ -23,7 +23,7 @@ public class TCPServer extends Thread {
     @Override
     public void run() {
         try {
-            this.sleep(1000);
+            sleep(1000);
             InputStream inputStream = socket.getInputStream();
 
             OutputStream outputStream = socket.getOutputStream();

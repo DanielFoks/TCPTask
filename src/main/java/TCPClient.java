@@ -1,50 +1,65 @@
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
 
 public class TCPClient {
-    private String message;
+    private final String message;
+    private String receivedMessage;
     private Socket socket;
 
-    public TCPClient(String message, Socket socket) {
+    private static final Logger log = Logger.getLogger(TCPClient.class);
+
+
+    public TCPClient(String message) {
         this.message = message;
-        this.socket = socket;
+        log.info("Client was created");
     }
 
     public String getMessage() {
         return message;
     }
 
-    public Socket getSocket() {
-        return socket;
+    public String getReceivedMessage() {
+        return receivedMessage;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public void setSocket(Socket socket) {
-        this.socket = socket;
-    }
-
-    public void sendMessage(){
+    public void connectToServer(InetAddress inetAddress, int port) {
         try {
-            socket.getOutputStream().write(message.getBytes());
-
-            byte buf[] = new byte[64*1024];
-            int r = socket.getInputStream().read(buf);
-            String data = new String(buf, 0, r);
-
-            System.out.println(data);
+            socket = new Socket(inetAddress, port);
+            TCPServer.countOfConnectedClients.incrementAndGet();
+            log.info("CONNECTED CLIENTS: " + TCPServer.countOfConnectedClients.get());
+            log.info("Connection was successful");
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Connection was not successful");
+            log.error(e.getMessage());
         }
     }
 
-    public void closeSocket(){
+    public void sendMessage() {
+        try {
+            socket.getOutputStream().write(message.getBytes());
+            log.info("Message: \"" + message + "\"" + " was sent");
+
+            byte buf[] = new byte[64 * 1024];
+            int r = socket.getInputStream().read(buf);
+            String data = new String(buf, 0, r);
+            receivedMessage = data;
+            log.info("Message: \"" + data + "\"" + " was received");
+        } catch (IOException e) {
+            log.error("Connection problems");
+            log.error(e.getMessage());
+        }
+    }
+
+    public void closeSocket() {
         try {
             socket.close();
+            TCPServer.countOfConnectedClients.updateAndGet((x) -> x - 1);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Socket can not be closed");
+            log.error(e.getMessage());
         }
     }
 }

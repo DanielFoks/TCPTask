@@ -11,15 +11,18 @@ import java.util.concurrent.Executors;
 
 public class TCPServerTest {
 
+    TCPServer tcpServer;
+
     @Before
     public void testServerConnection() {
-        TCPServer tcpServer = new TCPServer();
+        tcpServer = new TCPServer();
         tcpServer.start();
     }
 
     @Test
     public void testTCPClient() {
         ExecutorService executor = Executors.newFixedThreadPool(10);
+
         for (int i = 0; i < 1000; i++) {
 
             executor.execute(() -> {
@@ -64,6 +67,6 @@ public class TCPServerTest {
         while (!executor.isTerminated()) {
         }
 
-        Assert.assertEquals(TCPServer.totalNumbersOfClients.get(), 1000);
+        Assert.assertEquals(tcpServer.getTotalNumbersOfClients().get(), 1000);
     }
 }

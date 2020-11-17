@@ -57,6 +57,7 @@ public class TCPClient implements TCPClientInterface {
     /**
      * @param message Message to be sent
      */
+    @Override
     public void sendMessage(String message) {
         try {
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
@@ -70,34 +71,17 @@ public class TCPClient implements TCPClientInterface {
     }
 
     /**
-     * @param bufferedReader Stream to track incoming messages
-     * @return Message that was sent
-     */
-    public String receiveMessage(BufferedReader bufferedReader) {
-        String message = null;
-        try {
-            message = bufferedReader.readLine();
-            if (log.isDebugEnabled()) {
-                log.debug("Message: \"" + message + "\"" + " was received");
-            }
-
-        } catch (IOException e) {
-            log.error("Message can not be received: " + e.getMessage(), e);
-        }
-        return message;
-    }
-
-    /**
      * @return Message that was sent
      */
     @Override
     public String receiveMessage() {
-        return receiveMessage(this.bufferedReader);
+        return receiveMessage(this.bufferedReader, log);
     }
 
     /**
      * Disconnect from server
      */
+    @Override
     public void closeConnection() {
         try {
             socket.close();

@@ -93,7 +93,7 @@ public class TCPServer extends Thread implements TCPServerInterface {
 
 
             while (true) {
-                String receivedMessage = receiveMessage(bufferedReader);
+                String receivedMessage = receiveMessage(bufferedReader, log);
 
                 if (receivedMessage != null) {
 
@@ -129,6 +129,7 @@ public class TCPServer extends Thread implements TCPServerInterface {
     /**
      * @param message Message to be sent
      */
+    @Override
     public void sendMessage(String message) {
         PrintStream printStream;
         try {
@@ -143,26 +144,9 @@ public class TCPServer extends Thread implements TCPServerInterface {
     }
 
     /**
-     * @param bufferedReader Stream to track incoming messages
-     * @return Message that was sent
-     */
-    public String receiveMessage(BufferedReader bufferedReader) {
-        String message = null;
-        try {
-            message = bufferedReader.readLine();
-            if (log.isDebugEnabled()) {
-                log.debug("Message: \"" + message + "\"" + " was received");
-            }
-
-        } catch (IOException e) {
-            log.error("Message can not be received: " + e.getMessage(), e);
-        }
-        return message;
-    }
-
-    /**
      * Close connection with client
      */
+    @Override
     public void closeConnection() {
         try {
             clientSocket.close();

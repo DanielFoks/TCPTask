@@ -1,6 +1,9 @@
 package com.andersen.tcp.Interfaces;
 
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.net.UnknownHostException;
 
 /**
@@ -18,7 +21,19 @@ public interface TCPInterface {
      * @param bufferedReader Stream to track incoming messages
      * @return Message that was sent
      */
-    String receiveMessage(BufferedReader bufferedReader);
+    default String receiveMessage(BufferedReader bufferedReader, Logger log) {
+        String message = null;
+        try {
+            message = bufferedReader.readLine();
+            if (log.isDebugEnabled()) {
+                log.debug("Message: \"" + message + "\"" + " was received");
+            }
+
+        } catch (IOException e) {
+            log.error("Message can not be received: " + e.getMessage(), e);
+        }
+        return message;
+    }
 
     /**
      * Close connection with client

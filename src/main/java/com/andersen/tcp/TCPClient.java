@@ -57,7 +57,6 @@ public class TCPClient implements TCPClientInterface {
     /**
      * @param message Message to be sent
      */
-    @Override
     public void sendMessage(String message) {
         try {
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
@@ -74,7 +73,6 @@ public class TCPClient implements TCPClientInterface {
      * @param bufferedReader Stream to track incoming messages
      * @return Message that was sent
      */
-    @Override
     public String receiveMessage(BufferedReader bufferedReader) {
         String message = null;
         try {
@@ -100,7 +98,6 @@ public class TCPClient implements TCPClientInterface {
     /**
      * Disconnect from server
      */
-    @Override
     public void closeConnection() {
         try {
             socket.close();

@@ -129,7 +129,6 @@ public class TCPServer extends Thread implements TCPServerInterface {
     /**
      * @param message Message to be sent
      */
-    @Override
     public void sendMessage(String message) {
         PrintStream printStream;
         try {
@@ -147,7 +146,6 @@ public class TCPServer extends Thread implements TCPServerInterface {
      * @param bufferedReader Stream to track incoming messages
      * @return Message that was sent
      */
-    @Override
     public String receiveMessage(BufferedReader bufferedReader) {
         String message = null;
         try {
@@ -165,7 +163,6 @@ public class TCPServer extends Thread implements TCPServerInterface {
     /**
      * Close connection with client
      */
-    @Override
     public void closeConnection() {
         try {
             clientSocket.close();
